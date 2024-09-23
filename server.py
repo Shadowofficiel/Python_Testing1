@@ -63,6 +63,11 @@ def purchasePlaces():
     # Calcul du total des places réservées par le club pour tous les événements
     totalPlacesReservees = sum(club['placesReservees'].values())
 
+    # Vérification : la somme des places réservées ne doit pas dépasser 12, tous événements confondus
+    if totalPlacesReservees + placesRequired > 12:
+        flash(f"Vous avez déjà réservé {totalPlacesReservees} places. Vous ne pouvez réserver que {12 - totalPlacesReservees} places supplémentaires.")
+        return render_template('welcome.html', club=club, competitions=competitions)
+
     competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
