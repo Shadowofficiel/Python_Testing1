@@ -44,7 +44,6 @@ def book(competition,club):
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
-
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
@@ -78,9 +77,19 @@ def purchasePlaces():
         flash(f"Vous n'avez pas assez de points pour réserver {placesRequired} places. Vous avez {club['points']} points.")
         return render_template('welcome.html', club=club, competitions=competitions)
 
+    # Mise à jour des places et des points
     competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
-    club['points'] = int(club['points']) - placesRequired  # Mise à jour des points du club
-    flash('Great-booking complete!')
+    club['points'] = int(club['points']) - placesRequired
+
+    # Mise à jour des places réservées pour cet événement
+    if competition['name'] not in club['placesReservees']:
+        club['placesReservees'][competition['name']] = 0
+    club['placesReservees'][competition['name']] += placesRequired
+
+    totalPlacesReservees += placesRequired
+
+    # Message de confirmation de la réservation
+    flash(f"Réservation réussie ! Vous avez réservé {placesRequired} places pour {competition['name']}. Total des places réservées : {totalPlacesReservees} sur 12.")
     return render_template('welcome.html', club=club, competitions=competitions)
 
 # TODO: Add route for points display
