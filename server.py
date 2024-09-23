@@ -45,7 +45,6 @@ def book(competition,club):
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
 
-
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
@@ -61,9 +60,13 @@ def purchasePlaces():
     if 'placesReservees' not in club:
         club['placesReservees'] = {}
 
+    # Calcul du total des places réservées par le club pour tous les événements
+    totalPlacesReservees = sum(club['placesReservees'].values())
+
     competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
+
 
 # TODO: Add route for points display
 
