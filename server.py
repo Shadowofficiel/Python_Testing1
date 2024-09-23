@@ -86,11 +86,19 @@ def purchasePlaces():
         club['placesReservees'][competition['name']] = 0
     club['placesReservees'][competition['name']] += placesRequired
 
-    totalPlacesReservees += placesRequired
+    # Recalcul du total des places réservées pour tous les événements
+    totalPlacesReservees = sum(club['placesReservees'].values())
 
     # Message de confirmation de la réservation
     flash(f"Réservation réussie ! Vous avez réservé {placesRequired} places pour {competition['name']}. Total des places réservées : {totalPlacesReservees} sur 12.")
     return render_template('welcome.html', club=club, competitions=competitions)
+
+@app.route('/public-points')
+def publicPoints():
+    # Récupérer la liste des clubs et leurs points pour les afficher publiquement
+    return render_template('public_points.html', clubs=clubs)
+
+
 
 # TODO: Add route for points display
 
