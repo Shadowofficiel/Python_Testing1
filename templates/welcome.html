@@ -3,34 +3,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Summary | GUDLFT Registration</title>
+
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
-<body>
-        <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
+<body class="container py-4">
+
+    <h2>Welcome, {{club['email']}} <a href="{{url_for('logout')}}" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout</a></h2>
 
     {% with messages = get_flashed_messages()%}
     {% if messages %}
-        <ul>
-       {% for message in messages %}
-            <li>{{message}}</li>
-        {% endfor %}
-       </ul>
-    {% endif%}
-    Points available: {{club['points']}}
-    <h3>Competitions:</h3>
-    <ul>
-        {% for comp in competitions%}
-        <li>
-            {{comp['name']}}<br />
-            Date: {{comp['date']}}</br>
-            Number of Places: {{comp['numberOfPlaces']}}
-            {%if comp['numberOfPlaces']|int >0%}
-            <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}">Book Places</a>
-            {%endif%}
-        </li>
-        <hr />
-        {% endfor %}
-    </ul>
-    {%endwith%}
+        <div class="alert alert-warning">
+            <ul>
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="mt-4">
+        <p><strong>Points available:</strong> <span class="badge bg-success">{{club['points']}}</span></p>
+        
+        <h3>Competitions:</h3>
+        <ul class="list-group">
+            {% for comp in competitions %}
+            <li class="list-group-item">
+                <strong>{{comp['name']}}</strong><br />
+                <i class="fas fa-calendar-alt"></i> Date: {{comp['date']}}</br>
+                <i class="fas fa-users"></i> Number of Places: {{comp['numberOfPlaces']}}
+                {% if comp['numberOfPlaces']|int > 0 %}
+                <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}" class="btn btn-primary float-end"><i class="fas fa-ticket-alt"></i> Book Places</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
