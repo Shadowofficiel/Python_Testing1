@@ -93,6 +93,7 @@ def purchasePlaces():
     flash(f"Réservation réussie ! Vous avez réservé {placesRequired} places pour {competition['name']}. Total des places réservées : {totalPlacesReservees} sur 12.")
     return render_template('welcome.html', club=club, competitions=competitions)
 
+
 @app.route('/public-points')
 def publicPoints():
     # Récupérer la liste des clubs et leurs points pour les afficher publiquement
